@@ -1,0 +1,63 @@
+@startuml рис1
+title Диаграмма вариантов использования "Поликлиника"
+
+actor doctor as "Врач"
+actor doctor1 as "Врач специализации"
+actor doctor2 as "Терапевт"
+actor doctor3 as "Дежурный врач"
+actor doctor4 as "Медсестра"
+actor client as "Пациент"
+actor personal as "Сотрудник регистратуры"
+
+doctor <|-- doctor1
+doctor <|-- doctor2
+doctor <|-left- doctor3
+(Оказать\nнеотложную\nпомощь) -right- doctor3
+
+usecase US1 as "
+  Осуществить прием пациента
+  --
+  Определить срок потери трудоспособности пациента
+  Выписать рецепт пациенту
+  Направить на анализы
+"
+doctor -right- US1
+
+usecase US8 as "Занести информаци\nприема в личную\nкарточку"
+
+(Определить\nпотери\nтрудоспособности\nпациента) ..> US1:<<extend>>
+(Выписать рецепт\nпациенту) ...> US1:<<extend>>
+(Поставить\nдиагноз) <... US1:<<include>>
+(Направить на\nанализы) ...> US1:<<extend>>
+(Определить вид\nлечения) <... US1:<<include>>
+(Назначить\nлечение) <.. US1:<<include>>
+US8 <.left. US1:<<include>>
+
+US8 - doctor4
+
+US1 ---- client
+
+(Пройти\nназначеное\nлечение) -- client
+
+usecase US11 as "Оформить\nкарточку\nпациента"
+usecase US12 as "Оформить договор на\nоказание платных услуг"
+usecase US13 as "Оформить талон на прием к врачу"
+
+US11 -- client
+client - US12
+client -- US13
+
+
+US11 -- personal
+US12 - personal
+personal -- US13
+
+usecase US16 as "Дать\nсправку"
+
+(Зарегистрировать\nбольничный лист) -- personal
+personal - US16
+personal -- (Зарегистрировать\nсраховой полис)
+
+
+
+@enduml
