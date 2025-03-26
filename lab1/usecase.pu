@@ -1,6 +1,13 @@
 @startuml рис1
 title Диаграмма вариантов использования "Поликлиника"
 
+skinparam usecase {
+  BackgroundColor #7acff5
+}
+skinparam actor {
+  BackgroundColor #7acff5
+}
+
 actor doctor as "Врач"
 actor doctor1 as "Врач специализации"
 actor doctor2 as "Терапевт"
@@ -58,6 +65,11 @@ usecase US16 as "Дать\nсправку"
 personal - US16
 personal -- (Зарегистрировать\nсраховой полис)
 
+
+US16 ..> (Подсказать график работы врача):<<include>>
+(Подсказать стоимость платных услуг) <.. US16:<<include>>
+(Занести данные пациента в карточку) <.. US11:<<include>>
+(Определить № участка пациента) <.. US11:<<include>>
 
 
 @enduml
