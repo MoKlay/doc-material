@@ -1,0 +1,28 @@
+@startuml State
+title Диаграмма состояний для класса "Врач"
+skinparam state {
+  BackgroundColor #7acff5
+  BorderColor #7acff5
+}
+
+state "Не работает" as ss1 {
+  state "В отпуске" as sss1
+  state "На перерыве" as sss2
+  state "На больничном" as sss3
+  state "Повышение\nкалификации" as sss4
+  state "Выходной согласно\nграфику" as sss5
+  sss1 -[hidden]-> sss2
+  sss3 -[hidden]-> sss4
+}
+
+state "Работает" as ss2 {
+  state "Осуществляет\nприем" as s1
+  state "Свободен" as s2
+  s2 -> s1 
+  s2 <- s1 
+}
+ss2 -> ss1
+ss2 <- ss1
+
+
+@enduml
