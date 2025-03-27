@@ -1,0 +1,75 @@
+@startuml Task
+left to right direction
+scale 0.9
+
+actor "Зарегистрированный\nпользователь"  as User
+actor "Не зарегистрированный\nпользователь" as UnUser
+actor "Менеджер проекта" as ProjectManager
+actor "Член команды" as TM
+actor GitHub 
+
+usecase "Просмотреть отчеты" as ViewReports
+usecase "Просмотреть список проектов" as ViewProjects
+usecase "Просмотреть детали проекта" as ViewProjectDetails
+usecase "Просмотреть профиль" as ViewProfile
+usecase "Редактировать профиль" as EditProfile
+usecase "Просмотреть список публичных проектов" as ViewPublicProjects
+usecase "Просмотреть детали публичного проекта" as ViewPublicProjectDetails
+usecase "Зарегистрироваться" as Register
+usecase "Войти в систему" as Login
+usecase "Создать проект" as CreateProject
+usecase "Редактировать проект" as EditProject
+usecase "Удалить проект" as DeleteProject
+usecase "Создать задачу" as CreateTask
+usecase "Редактировать задачу" as EditTask
+usecase "Удалить задачу" as DeleteTask
+usecase "Связать проект с репозиторием GitHub" as LinkGitHub
+usecase "Создать issue GitHub из задачи" as CreateIssue
+usecase "Автоматически обновлять задачу из issue GitHub" as AutoUpdateTask
+usecase "Назначить роли в команде" as UC1
+usecase "Перераспределить роли" as UC2
+usecase "Собрать доску Канбан" as UC3
+usecase "Отслеживание сроков" as UC4
+usecase "Обновление задачи" as UpdateTask
+
+User --> ViewReports
+User --> ViewProjects 
+ViewProjects --> ViewProjectDetails: <<extend>>
+User --> ViewProfile
+ViewProfile --> EditProfile : <<extend>>
+User --> Login
+User --> UpdateTask
+UpdateTask --> AutoUpdateTask: <<include>>
+
+UnUser -->  ViewPublicProjects
+ViewPublicProjects --> ViewPublicProjectDetails
+UnUser --> Register
+
+User <|--  ProjectManager
+
+
+
+ProjectManager --> CreateProject
+ProjectManager --> EditProject
+ProjectManager --> DeleteProject
+ProjectManager --> CreateTask
+ProjectManager --> EditTask
+ProjectManager --> DeleteTask
+CreateTask --> CreateProject : <<extend>>
+ProjectManager --> LinkGitHub
+ProjectManager --> CreateIssue
+
+AutoUpdateTask --> GitHub
+ProjectManager --> UC1
+ProjectManager --> UC2
+ProjectManager --> UC3
+ProjectManager --> UC4
+TM --> UC3
+TM --> UC4
+User <|-- TM
+
+UC2 --> UC1 : <<extend>>
+
+
+
+@enduml

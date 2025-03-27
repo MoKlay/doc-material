@@ -1,0 +1,75 @@
+@startuml
+title Диаграмма размещения: Task Manager Pro 
+package "Мобильные устройства" as Mobile {
+  node "Android Device"
+  node "iOS Device"
+}
+node "Компьютер" as Computer {
+  artifact "Браузер"
+  artifact "Приложение"
+}
+
+package "Task Manager" {
+
+  node "Веб-серверы" as LB {
+    component "Nginx/Apache"
+  }
+  node "Служба статического контента" as StaticContent {
+    component "CDN (Content Delivery Network)"
+  }
+  rectangle "Auth Service" as AuthService <<container>> {
+    component "Auth Service"
+  }
+  node "Auth" as AuthDB <<database>>{
+    database "PostgreSQL (Auth)"
+  }
+  rectangle "Project Service" as ProjectService <<container>>{
+    component "Project Service"
+  }
+  node "Project" as ProjectDB <<database>>{
+    database "PostgreSQL (Project)"
+  }
+  rectangle "Task Service" as TaskService <<container>>{
+    component "Task Service"
+  }
+  node "Task" as TaskDB <<database>>{
+    database "PostgreSQL (Task)"
+  }
+  rectangle "GitHub Integration Service" as GitHubIntegrationService <<container>>{
+    component "GitHub Integration Service"
+  }
+  rectangle "Admin Service" as AdminService <<container>>{
+    component "Admin Service"
+  }
+  rectangle "Reports Service" as ReportsService <<container>>{
+    component "Reports Service"
+  }
+  node "Reports" as ReportsDB <<database>>{
+    database "ClickHouse (Reports)"
+  }
+  node "Кэш" as Cache {
+    database "Redis"
+  }
+  node "Очередь сообщений" as MessageQueue {
+    queue "RabbitMQ/Kafka"
+  }
+
+}
+
+
+ReportsService -[hidden]- TaskService
+AdminService -[hidden]- GitHubIntegrationService
+ProjectService -[hidden]- AuthService
+
+Mobile -- LB
+Computer -- LB
+
+LB -- StaticContent
+' StaticContent -- AppServers
+' AppServers -down- Cache
+' AppServers -down- MessageQueue
+
+ReportsDB - ReportsService
+TaskDB - TaskService
+
+@enduml

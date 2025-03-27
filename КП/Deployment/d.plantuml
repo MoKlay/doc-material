@@ -1,0 +1,114 @@
+@startuml
+
+left to right direction
+
+skinparam rectangle<<container>> {
+  BackgroundColor #333
+  Shadowing true
+  FontColor #fff
+} 
+
+rectangle "Облачная инфраструктура" {
+
+  rectangle "Уровень представления" {
+    node "Веб-серверы" as LB {
+      component "Nginx/Apache"
+    }
+    node "Служба статического контента" as StaticContent {
+      component "CDN (Content Delivery Network)"
+    }
+  }
+
+  rectangle "Уровень приложений" {
+    node "Серверы приложений" as AppServers {
+      rectangle "Auth Service" as AuthService <<container>> {
+        component "Auth Service"
+      }
+      rectangle "Project Service" as ProjectService <<container>>{
+        component "Project Service"
+      }
+      rectangle "Task Service" as TaskService <<container>>{
+        component "Task Service"
+      }
+      rectangle "GitHub Integration Service" as GitHubIntegrationService <<container>>{
+        component "GitHub Integration Service"
+      }
+      rectangle "Reports Service" as ReportsService <<container>>{
+        component "Reports Service"
+      }
+      rectangle "Admin Service" as AdminService <<container>>{
+        component "Admin Service"
+      }
+    }
+  }
+
+  rectangle "Уровень данных" {
+    node "Auth" as AuthDB <<database>>{
+      database "PostgreSQL (Auth)"
+    }
+    node "Project" as ProjectDB <<database>>{
+      database "PostgreSQL (Project)"
+    }
+    node "Task" as TaskDB <<database>>{
+      database "PostgreSQL (Task)"
+    }
+
+    node "Reports" as ReportsDB <<database>>{
+      database "ClickHouse (Reports)"
+    }
+    node "Кэш" as Cache {
+      database "Redis"
+    }
+    node "Очередь сообщений" as MessageQueue {
+      queue "RabbitMQ/Kafka"
+    }
+  }
+}
+rectangle "Клиентский уровень" {
+  package "Мобильные устройства" {
+    node "Android Device"
+    node "iOS Device"
+  }
+  node "Компьютер" {
+    artifact "Браузер"
+    artifact "Приложение"
+  }
+}
+
+' "Клиентский уровень" -down[hidden]- "Облачная инфраструктура"
+' "Уровень представления" -down[hidden]- "Уровень приложений"
+' ' "Уровень приложений" -down[hidden]- "Уровень данных"
+' LB -left- "Мобильные устройства": HTTP/HTTPS запросы (Mobile App)
+' LB -left- "Компьютер": HTTP/HTTPS запросы (Web Browser)
+
+
+
+' AppServers -up- LB : Распределяет трафик (HTTP/HTTPS)
+ReportsService -[hidden]- AdminService
+TaskService -[hidden]- GitHubIntegrationService
+ProjectService -[hidden]- AuthService
+
+MessageQueue -[hidden]- Cache
+ReportsDB -[hidden]- TaskDB
+ProjectDB -[hidden]- AuthDB
+
+"Мобильные устройства" -[hidden]- "Компьютер"
+LB -[hidden]- StaticContent
+
+
+
+' AuthService -- AuthDB : Чтение/запись (JDBC/ORM)
+' ProjectService -- ProjectDB : Чтение/запись (JDBC/ORM)
+' TaskService -- TaskDB : Чтение/запись (JDBC/ORM)
+' ReportsService -- ReportsDB : Чтение (JDBC/ORM)
+' AdminService -- AuthDB : Чтение/запись (JDBC/ORM)
+
+' AppServers -- MessageQueue : Отправка/получение сообщений
+' AppServers -- Cache : Чтение/запись (Redis Client)
+
+' GitHub -- GitHubIntegrationService : Вебхуки и API (REST)
+
+' LB -- StaticContent : Запрос статического контента (HTTP/HTTPS)
+' AppServers -- StaticContent : Обслуживание статического контента (HTTP/HTTPS)
+
+@enduml
