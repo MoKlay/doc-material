@@ -1,0 +1,30 @@
+@startuml
+title Диаграмма последовательностей
+
+skinparam component {
+    BackgroundColor #7acff5
+}
+skinparam note {
+    BackgroundColor #7acff5
+}
+
+
+
+
+component "Основное меню" as Menu
+component "АРМ сотрудника регистрации" as ARM1
+component "АРМ врача" as ARM2
+component "БД врачей" as DB1
+component "БД услуг" as DB2
+circle Терминал #7acff5
+component "Оформление\nталонов на\nприем" as Talon
+note left of Menu :Экранная форма\nпри открытии ИС 
+
+Menu ..> ARM1
+Menu ..> ARM2
+Menu - Терминал
+Терминал )-- Talon
+ARM1 ..> DB1
+ARM1 ..> DB2
+
+@enduml
