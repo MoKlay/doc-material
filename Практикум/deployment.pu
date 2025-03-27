@@ -1,0 +1,24 @@
+@startuml
+title Диагамма размещения для системы "Поликлиника"
+
+skinparam node {
+    BackgroundColor #7acff5
+}
+skinparam note {
+    BackgroundColor #7acff5
+}
+
+node "Сервер\nполиклиники" as n1
+node "АРМ сотрудника\nрегистратуры" as n2
+node "АРМ врача" as n3
+node "Электронный\nтерминал" as n4 <<device>>
+
+n1 -- n2: Защищенная\nлиния
+n1 -- n3: Защищенная\nлиния
+n1 -- n4
+n2 - n3: LAN
+n4 -[hidden] n2
+
+note bottom of n4 : для оформления\nталона через\nрегистратуру
+note bottom of n3 : установлен у\nкаждого врача 
+@enduml
