@@ -1,4 +1,4 @@
-@startuml рис1
+@startuml usecase
 title Диаграмма вариантов использования "Поликлиника"
 
 skinparam usecase {

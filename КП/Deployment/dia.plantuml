@@ -1,4 +1,4 @@
-@startuml
+@startuml deployment2
 title Диаграмма размещения: Task Manager Pro 
 package "Мобильные устройства" as Mobile {
   node "Android Device"

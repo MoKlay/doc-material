@@ -1,4 +1,4 @@
-@startuml Task
+@startuml usecase
 left to right direction
 scale 0.9
 

@@ -1,4 +1,4 @@
-@startuml
+@startuml components
 title Диаграмма последовательностей
 
 skinparam component {

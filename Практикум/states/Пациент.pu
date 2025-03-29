@@ -1,4 +1,4 @@
-@startuml
+@startuml State2
 title Диаграмма состояний для класса "Пациент"
 skinparam state {
   BackgroundColor #7acff5
