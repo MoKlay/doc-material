@@ -1,0 +1,32 @@
+@startuml Components 
+!include <c4/C4_Component>
+
+Container_Boundary(c1, "API (Java, Spring Boot)") {
+  Component(ProjectController, "Project Controller", "Spring MVC Controller", "Обрабатывает запросы, связанные с проектами")
+  Component(TaskController, "Task Controller", "Spring MVC Controller", "Обрабатывает запросы, связанные с задачами")
+  Component(UserController, "User Controller", "Spring MVC Controller", "Обрабатывает запросы, связанные с пользователями")
+  Component(ProjectService, "Project Service", "Spring Bean", "Содержит бизнес-логику для управления проектами")
+  Component(TaskService, "Task Service", "Spring Bean", "Содержит бизнес-логику для управления задачами")
+  Component(UserService, "User Service", "Spring Bean", "Содержит бизнес-логику для управления пользователями")
+  Component(ProjectRepository, "Project Repository", "Spring Data JPA Repository", "Отвечает за доступ к данным проектов")
+  Component(TaskRepository, "Task Repository", "Spring Data JPA Repository", "Отвечает за доступ к данным задач")
+  Component(UserRepository, "User Repository", "Spring Data JPA Repository", "Отвечает за доступ к данным пользователей")
+}
+
+Rel(ProjectController, ProjectService, "Использует")
+Rel(TaskController, TaskService, "Использует")
+Rel(UserController, UserService, "Использует")
+
+Rel(ProjectService, ProjectRepository, "Использует")
+Rel(TaskService, TaskRepository, "Использует")
+Rel(UserService, UserRepository, "Использует")
+
+Rel(ProjectService, TaskService, "Использует", "Для управления связанными задачами")
+
+title Component Diagram: API
+legend right
+  (C) Component
+  (Rel) Relationship
+endlegend
+
+@enduml

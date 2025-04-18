@@ -1,0 +1,26 @@
+@startuml Containers
+!include <c4/C4_Container>
+
+System_Boundary(c1, "Сервис Управления Проектами") {
+  Container(WebUI, "Web UI", "JavaScript, React", "Позволяет пользователям взаимодействовать с сервисом через браузер")
+  Container(API, "API", "Java, Spring Boot", "Предоставляет API для Web UI и других сервисов")
+  ContainerDb(Database, "База Данных", "PostgreSQL", "Хранит данные о проектах, задачах, пользователях и т.д.")
+  Container(TaskProcessor, "Task Processor", "Python, Celery", "Асинхронно обрабатывает задачи, такие как отправка уведомлений")
+}
+
+Rel(User, WebUI, "Использует", "Через браузер")
+Rel(WebUI, API, "Использует", "HTTPS / JSON")
+Rel(API, Database, "Читает и пишет", "JDBC")
+Rel(API, TaskProcessor, "Отправляет задачи", "RabbitMQ")
+Rel(TaskProcessor, EmailService, "Использует", "SMTP")
+Rel(API, AuthenticationService, "Использует", "HTTPS / JSON")
+Rel(WebUI, AuthenticationService, "Использует", "HTTPS / JSON")
+
+title Сервис Управления Проектами
+legend right
+  (C) Container
+  (CDb) ContainerDb
+  (Rel) Relationship
+endlegend
+
+@enduml

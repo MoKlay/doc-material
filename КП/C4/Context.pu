@@ -1,0 +1,26 @@
+@startuml Context
+!include <c4/C4_Context>
+
+System_Ext(User, "Пользователь", "Человек, использующий сервис для управления проектами")
+System_Boundary(c1, "Сервис Управления Проектами") {
+  System(ProjectManagementService, "Сервис Управления Проектами", "Сервис для организации, планирования, отслеживания и отчетности по программным проектам.")
+}
+
+Rel(User, ProjectManagementService, "Использует", "Через веб-интерфейс и API")
+
+System_Ext(EmailService, "Сервис Рассылок", "Отправляет уведомления пользователям")
+Rel(ProjectManagementService, EmailService, "Использует", "Для отправки уведомлений о задачах, обновлениях и статусах")
+
+System_Ext(AuthenticationService, "Сервис Аутентификации", "Подтверждает личность пользователя")
+Rel(ProjectManagementService, AuthenticationService, "Использует", "Для аутентификации и авторизации")
+
+Rel(ProjectManagementService, User, "Предоставляет", "Инструменты управления проектами")
+
+title Сервис Управления Проектами
+legend right
+  (C) System
+  (CExt) External System
+  (Rel) Relationship
+endlegend
+
+@enduml
