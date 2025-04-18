@@ -1,5 +1,5 @@
 @startuml components
-title Диаграмма последовательностей
+title Диаграмма компонентов
 
 skinparam component {
     BackgroundColor #7acff5
@@ -12,12 +12,12 @@ skinparam note {
 
 
 component "Основное меню" as Menu
-component "АРМ сотрудника регистрации" as ARM1
+component "АРМ сотрудника регистратуры" as ARM1
 component "АРМ врача" as ARM2
 component "БД врачей" as DB1
 component "БД услуг" as DB2
 circle Терминал #7acff5
-component "Оформление\nталонов на\nприем" as Talon
+component "Оформление\nталонов на\nприём" as Talon
 note left of Menu :Экранная форма\nпри открытии ИС 
 
 Menu ..> ARM1

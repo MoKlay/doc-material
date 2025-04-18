@@ -1,5 +1,5 @@
 @startuml sequence
-title Фрагмент диаграммы последовательностей
+title Фрагмент диаграммы последовательности
 hide footbox
 skinparam actor {
     BackgroundColor #7acff5
@@ -11,7 +11,7 @@ skinparam participant {
 actor Пациент
 actor "Сотрудник регистратуры"
 participant ":карточки пациентов"
-participant ":прием"
+participant ":приём"
 actor Врач
 activate Пациент #7acff5
 activate "Сотрудник регистратуры" #7acff5

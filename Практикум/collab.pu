@@ -1,0 +1,26 @@
+@startuml
+title Диаграмма коммуникации
+left to right direction
+
+actor "Пациент" as client
+actor "Сотрудник\nрегистратуры" as worked
+actor "Врач" as Medic
+
+rectangle "Карточки пациентов" as Card
+rectangle "Прием" as Get
+
+Card -left- Card
+
+Card --> worked: 7: Карточка
+Card <-- worked: 5: Запрос на наличие
+worked <------ client: 1: Обращение в регистратуру
+worked <------ client: 2: Запрос на талон
+worked <------ client: 4: Запрос на карточку
+worked ------> client: 3: Талон на прием
+worked ------> client: 6: Карточка клиента
+client --> Get: 8: Жалобы
+Get <-- Medic: 9: Запись в карточку
+
+
+
+@enduml
